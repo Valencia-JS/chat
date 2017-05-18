@@ -16,5 +16,6 @@ server([
   socket('logout',     chat.logout),  // Manual
   socket('disconnect', chat.logout),  // Accidental/cerrar ventana
 
+  // En caso que haya alguna petición sin responder
   get('*', ctx => 404)
 ]);

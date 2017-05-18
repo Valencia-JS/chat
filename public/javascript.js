@@ -1,4 +1,5 @@
 // UTILS
+// Conectamos al servidor con socket.io
 var socket = io();
 
 // Evitar XSS usando escape()
@@ -14,6 +15,8 @@ var escape = function(html) {
 $('#login').modal({ dismissible: false }).submit(function (e) {
   e.preventDefault();
   var user = $('#login input').val();
+
+  // Continuar sólo si sí que hay usuario
   if (!user) return;
   cookies({ user });
   $('#login').modal('close');
@@ -21,11 +24,11 @@ $('#login').modal({ dismissible: false }).submit(function (e) {
   setTimeout(function(){ $('#message').focus(); }, 500);
 });
 
-if (!cookies('user')) {
-  $('#login').modal('open');
-} else {
+if (cookies('user')) {
   socket.emit('login', cookies('user'));
   setTimeout(function(){ $('#message').focus(); }, 500);
+} else {
+  $('#login').modal('open');
 }
 
 $('.logout').click(function(){
